@@ -3,6 +3,10 @@
 An agent skill that lets coding agents render analysis results as interactive HTML report dashboards (Canvas).
 React + shadcn/ui-style components + Recharts + Tailwind — runs locally, works offline, live reload via Vite HMR.
 
+<p align="center">
+  <img src="image.png" alt="Example report: Python 3.15 speed benchmark" width="900" />
+</p>
+
 ## Live demo
 
 [▶ Try the interactive showcase](https://iamyb.github.io/canvas-report/) — all 10 sample reports rendered live in a single self-contained HTML file (no server required).
