@@ -1,0 +1,6 @@
+# Force LF for shell scripts so they work on macOS / Linux / WSL
+# regardless of the committing machine's line-ending settings
+*.sh text eol=lf
+
+# Keep the binary seed tarball binary
+scripts/canvas-report-assets.tar.gz binary
