@@ -17,7 +17,8 @@ Renders agent-authored reports as interactive web pages. The runtime project is 
 
 ## Workflow
 
-1. **Collect data**: use existing tool results / file reads. **Never fabricate numbers**; if data is illustrative, label it "Demo data" in `meta.badges`
+1. **Collect data**: use existing tool results / file reads. **Never fabricate numbers**; if data is illustrative, label it "Demo data" in `meta.badges`.
+   If the user's message contains a URL, treat it as the data source — see **URL as data source** below
 2. **Ensure installed** (first time only): check if `~/.canvas-report/node_modules` exists; if not, run the install script in this skill's directory:
    - macOS / Linux / WSL: `sh <skill-dir>/scripts/setup.sh`
    - Windows PowerShell: `powershell -ExecutionPolicy Bypass -File <skill-dir>\scripts\setup.ps1`
@@ -48,6 +49,19 @@ Renders agent-authored reports as interactive web pages. The runtime project is 
    Default output is the **current working directory** (the user's project) as `<report-id>.html` — do not ask the user where to put it;
    pass a second argument (output dir) only if the user explicitly wants a different location
 7. **Deliver**: tell the user the HTML file path (double-click to view, shareable)
+
+## URL as data source
+
+When the user invokes the skill with a URL (e.g. `/canvas-report https://example.com/pricing`), fetch that page and build the report from its data. No special syntax is needed — a URL in the request means "use this page as the data source".
+
+1. **Fetch**: prefer a lightweight fetch (web-fetch tool / curl). If the page is JS-rendered (SPA, lazy-loaded tables) and the fetch returns an empty shell, open it with the browser tools and read the rendered DOM instead
+2. **Extract data, not prose**: pull tables, metrics, timelines, and lists; reorganize them into the report structure below. Do not copy long passages of the page's text verbatim
+3. **Images** — classify each `<img>` and handle by type:
+   - **Data charts** (screenshots of charts/graphs): do NOT embed the image. Read the chart visually and transcribe the values into structured data, then redraw with native Recharts (interactive, theme-consistent). Values read off an image are approximate — add a note like "data transcribed from source image, approximate". Do not add a "Demo data" badge (the data has a real source; only the precision is limited)
+   - **Asset images** (logos, architecture diagrams, screenshot evidence): download and inline as a base64 data URI (`<img src="data:image/png;base64,..." />`) — the deliverable must stay offline-capable, so never hotlink the original URL. Budget: skip images > ~200 KB or keep at most 3–4 per report; add a caption with the source
+   - Download fails (anti-bot, too large): skip the image and note "original at <url>" in the report
+4. **Cite the source**: put the source URL + fetch date in `meta.description` or a footer line (e.g. "Source: <url>, fetched 2026-10-14"). Real fetched data → no "Demo data" badge; if parts are inferred or incomplete, say so explicitly
+5. **On failure** (timeout, paywall, login required, anti-bot): tell the user what failed and ask whether to use an alternative source or have them provide the data. **Never fabricate** the page's contents
 
 ## Report structure (conclusion first)
 
