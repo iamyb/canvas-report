@@ -98,4 +98,59 @@ body {
     --color-chart-tooltip-border: #e2e8f0;
     --color-chart-tooltip-fg: #1f2937;
   }
+
+  /* The print viewport is narrow, so md:/lg: breakpoints never match and the
+     desktop layout collapses. Force the desktop column counts for the grid
+     patterns used across reports (KPI rows, two-column card rows, 3-col rows). */
+  .grid.grid-cols-2.md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+  .grid.md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .grid.md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  .grid.lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Tables: drop the horizontal scroll wrapper so content isn't clipped */
+  .overflow-auto {
+    overflow: visible !important;
+  }
+
+  /* Keep logical units intact across page breaks */
+  tr,
+  li {
+    break-inside: avoid;
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+}
+
+/* PNG/PDF export: html2canvas captures the live DOM (no print media), so apply
+   the same light-color overrides as @media print via a class toggled during capture */
+.force-light,
+.force-light .theme-dark {
+  --color-background: #ffffff;
+  --color-foreground: #1f2937;
+  --color-card: #ffffff;
+  --color-card-foreground: #1f2937;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-border: #e2e8f0;
+  --color-chart-grid: #e2e8f0;
+  --color-chart-tick: #64748b;
+  --color-chart-tooltip-bg: #ffffff;
+  --color-chart-tooltip-border: #e2e8f0;
+  --color-chart-tooltip-fg: #1f2937;
+}
+
+/* Hide the export buttons themselves while capturing */
+[data-exporting] .export-btn {
+  display: none !important;
 }

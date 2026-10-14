@@ -11,10 +11,13 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "package": "node scripts/build-tarball.mjs"
+    "package": "node scripts/build-tarball.mjs",
+    "export:showcase": "node scripts/export-showcase.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "html2canvas-pro": "^2.5.2",
+    "jspdf": "^4.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "recharts": "^2.15.0",
