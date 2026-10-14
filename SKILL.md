@@ -67,7 +67,7 @@ When the user invokes the skill with a URL (e.g. `/canvas-report https://example
 
 1. KPI row: `<div className="grid grid-cols-2 gap-3 md:grid-cols-4">` + `<Stat>` (3–6 core metrics)
 2. Key findings: 2–4 conclusions in a `<Card>` (list-disc); write conclusions, not raw data listings
-3. Charts: trend → LineChart, comparison → BarChart, share → PieChart, distribution → AreaChart, mixed metrics (bars + line) → ComposedChart, multi-dimensional score → RadarChart, conversion funnel → FunnelChart, hierarchical share (many categories) → Treemap
+3. Charts: trend → LineChart, comparison → BarChart, share → PieChart, distribution → AreaChart, mixed metrics (bars + line) → ComposedChart, multi-dimensional score → RadarChart, conversion funnel → FunnelChart, hierarchical share (many categories) → Treemap, flow / how X moves between stages (traffic, money, energy) → Sankey
 4. Detail table: `<Table>` + `useSort` (click header to sort)
 5. Timeline: `<Timeline>` (event-based reports)
 6. Appendix: data sources, time range, known limitations
@@ -268,6 +268,55 @@ Use when a whole is split into many parts (cost by service, disk usage, budget a
       );
     }}
   />
+</ResponsiveContainer>
+```
+
+### Sankey (flow between stages)
+
+Use to show how a quantity moves between stages — traffic sources → outcomes, budget → line items, energy → end use. **Requires Recharts v3** (already installed). Data is `{ nodes: [{ name }], links: [{ source, target, value }] }` where `source`/`target` are **indices** into `nodes`. Keep it to ~2–3 columns and ≤ ~12 nodes. Give the chart generous left/right `margin` so the custom node labels fit, and draw labels with a custom `node` (right-aligned for the left column, left-aligned for the right):
+
+```jsx
+const data = {
+  nodes: [
+    { name: "Organic" }, { name: "Paid" }, { name: "Referral" },
+    { name: "Signup" }, { name: "Bounce" },
+    { name: "Trial" }, { name: "Churn" }, { name: "Paid plan" },
+  ],
+  links: [
+    { source: 0, target: 3, value: 4200 }, { source: 0, target: 4, value: 2800 },
+    { source: 1, target: 3, value: 3100 }, { source: 1, target: 4, value: 4900 },
+    { source: 2, target: 3, value: 1500 }, { source: 2, target: 4, value: 500 },
+    { source: 3, target: 5, value: 5200 }, { source: 3, target: 6, value: 3600 },
+    { source: 5, target: 7, value: 2100 },
+  ],
+};
+
+const renderNode = (props) => {
+  const { x, y, width, height, index } = props;
+  const onRight = x > 300; // flip label side for the right-hand column
+  return (
+    <g>
+      <rect x={x} y={y} width={width} height={height} fill={`var(--color-chart-${(index % 6) + 1})`} rx={2} />
+      <text x={onRight ? x - 6 : x + width + 6} y={y + height / 2} dy="0.35em"
+        textAnchor={onRight ? "end" : "start"} fill="var(--color-chart-tick)" fontSize={11} fontWeight={600}>
+        {data.nodes[index].name}
+      </text>
+    </g>
+  );
+};
+
+<ResponsiveContainer width="100%" height={320}>
+  <Sankey
+    data={data}
+    nameKey="name"
+    nodeWidth={14}
+    nodePadding={24}
+    margin={{ top: 10, right: 120, bottom: 10, left: 120 }}
+    node={renderNode}
+    link={{ stroke: "var(--color-chart-1)", strokeOpacity: 0.25 }}
+  >
+    <Tooltip contentStyle={{ backgroundColor: "var(--color-chart-tooltip-bg)", border: "1px solid var(--color-chart-tooltip-border)", borderRadius: 8, color: "var(--color-chart-tooltip-fg)" }} />
+  </Sankey>
 </ResponsiveContainer>
 ```
 
