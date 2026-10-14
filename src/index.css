@@ -74,3 +74,28 @@ body {
   font-family: system-ui, "Segoe UI", "Microsoft YaHei", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Print / Save as PDF (header print button): force light colors so dark-theme
+   reports also print legibly, and keep cards intact across page breaks */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  body {
+    background: #ffffff;
+  }
+  .theme-dark {
+    --color-background: #ffffff;
+    --color-foreground: #1f2937;
+    --color-card: #ffffff;
+    --color-card-foreground: #1f2937;
+    --color-muted: #f1f5f9;
+    --color-muted-foreground: #64748b;
+    --color-border: #e2e8f0;
+    --color-chart-grid: #e2e8f0;
+    --color-chart-tick: #64748b;
+    --color-chart-tooltip-bg: #ffffff;
+    --color-chart-tooltip-border: #e2e8f0;
+    --color-chart-tooltip-fg: #1f2937;
+  }
+}

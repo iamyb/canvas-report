@@ -45,7 +45,7 @@ export default function Showcase() {
         <div className="flex items-center justify-between">
           <button
             onClick={() => setOpenId(null)}
-            className="rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
+            className="rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted print:hidden"
           >
             ← Back to gallery
           </button>
