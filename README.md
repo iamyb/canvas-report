@@ -1,6 +1,6 @@
 # canvas-report
 
-An [Agent Skill](https://agentskills.io) that lets coding agents render analysis results as interactive HTML report dashboards (Canvas).
+An agent skill that lets coding agents render analysis results as interactive HTML report dashboards (Canvas).
 React + shadcn/ui-style components + Recharts + Tailwind — runs locally, works offline, live reload via Vite HMR.
 
 ## Live demo
