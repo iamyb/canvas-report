@@ -4,3 +4,6 @@
 
 # Keep the binary seed tarball binary
 scripts/canvas-report-assets.tar.gz binary
+
+# Generated single-file HTML (re-exported wholesale; avoid line-ending churn)
+demo/index.html binary

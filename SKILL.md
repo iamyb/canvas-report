@@ -197,6 +197,7 @@ Consult these examples before writing a report; each deliberately covers a diffe
 - `saas-growth.jsx` — **SaaS growth + cohort analysis**: KPI row with `sparkline` mini trends, MRR AreaChart (waterfall), churn BarChart (segmented coloring), NRR cohort BarChart (conditional coloring), unit economics table + `ScoreBar` threshold coloring, sortable Top customers table
 - `ab-test-results.jsx` — **A/B experiment portfolio + statistical significance (flat layout)**: sortable portfolio table (full width), ScatterChart (effect size vs −log₁₀p, with p=0.05 reference line, full width), control/variant grouped BarChart + business impact BarChart (side by side in a 2-col grid) (real case: Dutch Railways NS)
 - `ml-model-evaluation.jsx` — **Multi-benchmark model comparison + cost analysis (flat layout)**: three horizontal BarCharts for MMLU/GPQA/HumanEval (open/closed-source coloring) + ScatterChart (cost vs capability, log axis) in a 2×2 grid, MMLU vs HumanEval grouped BarChart + sortable table (full width) (real data: llm-stats.com)
+- `showcase.jsx` — **Gallery of all sample reports**: grid of cards, each with a live scaled-down preview (CSS `transform: scale`) of the full report; click a card to open the full interactive report inline (no navigation, so it works in the exported single-file HTML). Useful as a self-contained demo page.
 
 ## Quick reference
 
