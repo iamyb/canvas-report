@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/* Default light theme. When a report sets meta.theme: "dark", Layout applies .theme-dark on the root node.
+   Colors fall into four categories:
+   - Surface (background/card/foreground/muted/border): switch with theme
+   - Structural (chart-grid/chart-tick/chart-tooltip-*): chart skeleton, switch with theme, do not change inside reports
+   - Data (chart-1~6): chart series colors, overridable via palette
+   - Semantic (success/warning/destructive): status/alert, fixed, do not change with theme */
+@theme {
+  --color-background: #f6f8fb;
+  --color-foreground: #1f2937;
+  --color-card: #ffffff;
+  --color-card-foreground: #1f2937;
+  --color-muted: #eef1f6;
+  --color-muted-foreground: #64748b;
+  --color-border: #e2e8f0;
+  --color-primary: #4f8cff;
+  --color-primary-foreground: #ffffff;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-destructive: #dc2626;
+  --color-ring: #4f8cff;
+  --color-chart-1: #4f8cff;
+  --color-chart-2: #22c55e;
+  --color-chart-3: #f59e0b;
+  --color-chart-4: #ef4444;
+  --color-chart-5: #a78bfa;
+  --color-chart-6: #22d3ee;
+  --color-chart-grid: #e2e8f0;
+  --color-chart-tick: #64748b;
+  --color-chart-tooltip-bg: #ffffff;
+  --color-chart-tooltip-border: #e2e8f0;
+  --color-chart-tooltip-fg: #1f2937;
+}
+
+/* Dark theme: overrides surface + structural colors; data and semantic colors stay the same */
+.theme-dark {
+  --color-background: #0b0e14;
+  --color-foreground: #e5e9f0;
+  --color-card: #121722;
+  --color-card-foreground: #e5e9f0;
+  --color-muted: #1a2130;
+  --color-muted-foreground: #8b95a7;
+  --color-border: #1f2937;
+  --color-chart-grid: #1f2937;
+  --color-chart-tick: #8b95a7;
+  --color-chart-tooltip-bg: #121722;
+  --color-chart-tooltip-border: #1f2937;
+  --color-chart-tooltip-fg: #e5e9f0;
+}
+
+/* Alternative chart palettes: when a report sets meta.palette, Layout applies the matching class on the root node to override data colors.
+   Only --color-chart-1~6 (data colors) are overridden; surface/structural/semantic colors stay the same */
+.palette-warm {
+  --color-chart-1: #f97316;
+  --color-chart-2: #fbbf24;
+  --color-chart-3: #ef4444;
+  --color-chart-4: #ec4899;
+  --color-chart-5: #f59e0b;
+  --color-chart-6: #fb7185;
+}
+.palette-mono {
+  --color-chart-1: #64748b;
+  --color-chart-2: #94a3b8;
+  --color-chart-3: #475569;
+  --color-chart-4: #cbd5e1;
+  --color-chart-5: #0ea5e9;
+  --color-chart-6: #38bdf8;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: system-ui, "Segoe UI", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
