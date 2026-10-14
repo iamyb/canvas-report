@@ -4,7 +4,7 @@ An agent skill that lets coding agents render analysis results as interactive HT
 React + shadcn/ui-style components + Recharts + Tailwind — runs locally, works offline, live reload via Vite HMR.
 
 <p align="center">
-  <img src="image.png" alt="Example report: Python 3.15 speed benchmark" width="900" />
+  <img src="image.gif" alt="Example report: Python 3.15 speed benchmark" width="900" />
 </p>
 
 ## Live demo
