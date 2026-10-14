@@ -33,7 +33,7 @@ Renders agent-authored reports as interactive web pages. The runtime project is 
      description: "One-line summary",
      badges: [{ label: "Demo data", variant: "warning" }], // optional
      theme: "dark", // optional: "dark"; omit = default light
-     palette: "warm", // optional: "warm" | "mono", changes chart data colors; omit = default
+     palette: "tableau", // optional: see "Palette presets"; omit = default
      updatedAt: "2026-10-14 10:30", // optional
    };
    export default function Report() {
@@ -154,20 +154,37 @@ Default is **light**. Add `theme: "dark"` to `meta` when the user requests dark 
 export const meta = {
   title: "...",
   theme: "dark", // optional: "dark"; omit = default light
-  palette: "warm", // optional: "warm" | "mono", changes chart data colors
+  palette: "tableau", // optional: see "Palette presets"; omit = default
 };
 ```
 
 - `theme` switches surface + structural colors; data and semantic colors stay the same
-- `palette` only overrides data colors; they can be combined (e.g. `theme: "dark"` + `palette: "warm"`)
+- `palette` only overrides data colors; they can be combined (e.g. `theme: "dark"` + `palette: "tableau"`)
 
-### Palette presets (optional)
+### Palette presets
 
-The default palette is fine. When the user requests a different color scheme, add `palette` to `meta`:
+Available palettes (all derived from professional data-viz sources — d3-scale-chromatic / Tableau / Observable):
 
-- `"warm"`: warm tones (orange/gold/red/pink), suited for cost/finance reports
-- `"mono"`: monochrome (grayscale + blue), suited for technical/architecture reports
-- For non-preset colors, override at the top of the report JSX with `<style>{`.my-report { --color-chart-1: #xxx; ... }`}</style>` (data colors only)
+| `palette` | Look | Best for |
+|-----------|------|----------|
+| *(omit)* | blue/green/amber/red/violet/cyan | general purpose |
+| `"tableau"` | Tableau 10 — muted blue/orange/red/teal/green/gold | business, finance, KPI dashboards |
+| `"observable"` | Observable 10 — vivid indigo/amber/coral/teal/green/pink | tech, engineering, performance |
+| `"warm"` | orange/gold/red/pink | cost, finance, alerts |
+| `"dark2"` | green/orange/purple/magenta/lime/gold | health, environment, sustainability |
+| `"set2"` | soft pastels (mint/peach/periwinkle/rose/lime/gold) | education, people, gentle topics |
+| `"sunset"` | warm gradient (orange/amber/rose/pink/coral/gold) | marketing, growth, creative |
+| `"mono"` | grayscale + blue | architecture, infrastructure, minimal |
+
+**Visual variety (important):** consecutive reports should NOT look identical. Pick `theme`/`palette` to fit the report's domain, and vary them across reports you generate in the same session. Suggested mapping:
+
+- finance / cost / security → `theme: "dark"` + `"tableau"` or `"warm"`
+- engineering / performance / benchmarks → `"observable"` or `"mono"`
+- health / environment / sustainability → `"dark2"`
+- marketing / growth / creative → `"sunset"` or `"warm"`
+- education / people / gentle topics → `"set2"`
+
+For non-preset colors, override at the top of the report JSX with `<style>{`.my-report { --color-chart-1: #xxx; ... }`}</style>` (data colors only)
 
 - Line: `type="monotone" strokeWidth={2} dot={{ r: 2 }}`
 - Donut: `innerRadius={50} outerRadius={80} paddingAngle={2}` + `Cell` for per-slice colors

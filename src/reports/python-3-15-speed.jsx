@@ -22,6 +22,7 @@ export const meta = {
   title: "How Fast Is Python 3.15?",
   description:
     "Informal CPython 3.15 benchmark vs. 3.10–3.14, PyPy, Node.js and Rust — fibo & bubble, single- and multi-threaded, incl. JIT & free-threading builds. Source: blog.miguelgrinberg.com, fetched 2026-10-14",
+  palette: "observable",
   updatedAt: "2026-10-14 16:22",
 };
 

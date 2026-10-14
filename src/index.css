@@ -67,6 +67,51 @@
   --color-chart-5: #0ea5e9;
   --color-chart-6: #38bdf8;
 }
+/* Tableau 10 (first 6) — the BI industry standard, safe for any report */
+.palette-tableau {
+  --color-chart-1: #4e79a7;
+  --color-chart-2: #f28e2c;
+  --color-chart-3: #e15759;
+  --color-chart-4: #76b7b2;
+  --color-chart-5: #59a14f;
+  --color-chart-6: #edc948;
+}
+/* Observable 10 (first 6) — modern, high-contrast, tech feel */
+.palette-observable {
+  --color-chart-1: #4269d0;
+  --color-chart-2: #efb118;
+  --color-chart-3: #ff725c;
+  --color-chart-4: #6cc5b0;
+  --color-chart-5: #3ca951;
+  --color-chart-6: #ff8ab7;
+}
+/* Dark 2 (first 6) — green/teal-led, good for health, environment, sustainability */
+.palette-dark2 {
+  --color-chart-1: #1b9e77;
+  --color-chart-2: #d95f02;
+  --color-chart-3: #7570b3;
+  --color-chart-4: #e7298a;
+  --color-chart-5: #66a61e;
+  --color-chart-6: #e6ab02;
+}
+/* Set 2 (first 6) — soft pastels, gentle reports (education, people, wellness) */
+.palette-set2 {
+  --color-chart-1: #66c2a5;
+  --color-chart-2: #fc8d62;
+  --color-chart-3: #8da0cb;
+  --color-chart-4: #e78ac3;
+  --color-chart-5: #a6d854;
+  --color-chart-6: #ffd92f;
+}
+/* Sunset — warm gradient family, marketing / growth / creative */
+.palette-sunset {
+  --color-chart-1: #f97316;
+  --color-chart-2: #f59e0b;
+  --color-chart-3: #e11d48;
+  --color-chart-4: #ec4899;
+  --color-chart-5: #fb7185;
+  --color-chart-6: #fbbf24;
+}
 
 body {
   background-color: var(--color-background);
