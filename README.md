@@ -37,7 +37,7 @@ skill directory (read-only template) global runtime (user home)
 - **The final deliverable is a self-contained single-file HTML** (produced by `export`; double-click to view, shareable, no Node required):
   ```bash
   node scripts/export.mjs <report-id> [output-dir]
-  # → ~/.canvas-report/dist/<report-id>.html
+  # → ./<report-id>.html (current working directory by default)
   ```
 - For iterative development, the `start` script idempotently launches the dev server (default port 5199):
   `http://localhost:5199/?report=<report-id>`
@@ -61,8 +61,9 @@ and open `http://localhost:5199/?report=<filename>`.
 
 ```bash
 npm install
-npm run dev       # local development (this repo directory)
-npm run package   # regenerate scripts/canvas-report-assets.tar.gz (must run and commit after changing src/ or vite.config.js)
+npm run dev             # local development (this repo directory)
+npm run package         # regenerate scripts/canvas-report-assets.tar.gz (must run and commit after changing src/ or vite.config.js)
+npm run export:showcase # rebuild docs/index.html (GitHub Pages demo) from this repo
 ```
 
 ## License
