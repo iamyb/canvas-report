@@ -44,8 +44,9 @@ Renders agent-authored reports as interactive web pages. The runtime project is 
 6. **Export the deliverable (required)**:
    - macOS / Linux / WSL: `node <skill-dir>/scripts/export.mjs <report-id> [output-dir]`
    - Windows PowerShell: `node <skill-dir>\scripts\export.mjs <report-id> [output-dir]`
-   Produces a **self-contained single-file HTML** (all JS/CSS inlined, chart sorting and other interactions preserved), default output at
-   `~/.canvas-report/dist/<report-id>.html`; pass a second argument (output dir) if the user wants it in their project
+   Produces a **self-contained single-file HTML** (all JS/CSS inlined, chart sorting and other interactions preserved).
+   Default output is the **current working directory** (the user's project) as `<report-id>.html` — do not ask the user where to put it;
+   pass a second argument (output dir) only if the user explicitly wants a different location
 7. **Deliver**: tell the user the HTML file path (double-click to view, shareable)
 
 ## Report structure (conclusion first)

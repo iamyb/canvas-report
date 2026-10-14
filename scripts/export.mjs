@@ -1,7 +1,7 @@
 // Build a report into a self-contained single-file HTML (double-click to view, shareable)
 // Usage: node scripts/export.mjs <report-id> [output-dir]
 //   report-id: filename of src/reports/<report-id>.jsx (without .jsx)
-//   output-dir: defaults to <global project>/dist
+//   output-dir: defaults to the current working directory (the user's project)
 // Examples: node scripts/export.mjs cost-audit
 //           node scripts/export.mjs cost-audit D:\some\project\reports
 import { execFileSync } from "node:child_process";
@@ -19,7 +19,7 @@ if (!reportId || !/^[a-z0-9-]+$/.test(reportId)) {
   process.exit(1);
 }
 
-const outDir = resolve(process.argv[3] || join(target, "dist"));
+const outDir = resolve(process.argv[3] || process.cwd());
 
 if (!existsSync(join(target, "node_modules"))) {
   console.error("Error: not installed yet, run the setup script first");
