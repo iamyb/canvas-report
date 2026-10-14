@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "../components/ui/card.jsx";
 import { Badge } from "../components/ui/badge.jsx";
 import { Separator } from "../components/ui/separator.jsx";
@@ -34,8 +34,23 @@ const REPORTS = [
   { id: "qwen-vs-deepseek", Comp: QwenVsDeepSeek, meta: qwenMeta, tag: "Cost analysis" },
 ];
 
+// Hash routing: #<report-id> opens a sub-report, so the URL is shareable and
+// back/forward work (also in the exported single-file HTML opened via file://)
+function hashId() {
+  const id = location.hash.replace(/^#/, "");
+  return REPORTS.some((r) => r.id === id) ? id : null;
+}
+
 export default function Showcase() {
-  const [openId, setOpenId] = useState(null);
+  const [openId, setOpenId] = useState(hashId);
+
+  // keep state in sync with the URL (back/forward, manual hash edits)
+  useEffect(() => {
+    const onHash = () => setOpenId(hashId());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
   const open = REPORTS.find((r) => r.id === openId);
 
   if (open) {
@@ -44,7 +59,10 @@ export default function Showcase() {
       <div className="space-y-5">
         <div className="flex items-center justify-between">
           <button
-            onClick={() => setOpenId(null)}
+            onClick={() => {
+              history.replaceState(null, "", location.pathname + location.search);
+              setOpenId(null);
+            }}
             className="rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted print:hidden"
           >
             ← Back to gallery
@@ -69,11 +87,13 @@ export default function Showcase() {
             <div
               role="button"
               tabIndex={0}
-              onClick={() => setOpenId(id)}
+              onClick={() => {
+                location.hash = id; // pushes a history entry → back returns to gallery
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  setOpenId(id);
+                  location.hash = id;
                 }
               }}
               className="group block w-full cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
