@@ -67,7 +67,7 @@ When the user invokes the skill with a URL (e.g. `/canvas-report https://example
 
 1. KPI row: `<div className="grid grid-cols-2 gap-3 md:grid-cols-4">` + `<Stat>` (3–6 core metrics)
 2. Key findings: 2–4 conclusions in a `<Card>` (list-disc); write conclusions, not raw data listings
-3. Charts: trend → LineChart, comparison → BarChart, share → PieChart, distribution → AreaChart
+3. Charts: trend → LineChart, comparison → BarChart, share → PieChart, distribution → AreaChart, mixed metrics (bars + line) → ComposedChart, multi-dimensional score → RadarChart, conversion funnel → FunnelChart, hierarchical share (many categories) → Treemap
 4. Detail table: `<Table>` + `useSort` (click header to sort)
 5. Timeline: `<Timeline>` (event-based reports)
 6. Appendix: data sources, time range, known limitations
@@ -188,6 +188,88 @@ For non-preset colors, override at the top of the report JSX with `<style>{`.my-
 
 - Line: `type="monotone" strokeWidth={2} dot={{ r: 2 }}`
 - Donut: `innerRadius={50} outerRadius={80} paddingAngle={2}` + `Cell` for per-slice colors
+
+### ComposedChart (mixed metrics: bars + line in one chart)
+
+Use when two metrics with different scales belong together (e.g. revenue bars + growth-rate line). The line goes on a second Y axis:
+
+```jsx
+<ResponsiveContainer width="100%" height={260}>
+  <ComposedChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+    <CartesianGrid stroke="var(--color-chart-grid)" strokeDasharray="3 3" vertical={false} />
+    <XAxis dataKey="name" tick={{ fill: "var(--color-chart-tick)", fontSize: 12 }} axisLine={false} tickLine={false} />
+    <YAxis yAxisId="left" tick={{ fill: "var(--color-chart-tick)", fontSize: 12 }} axisLine={false} tickLine={false} width={48} />
+    <YAxis yAxisId="right" orientation="right" tick={{ fill: "var(--color-chart-tick)", fontSize: 12 }} axisLine={false} tickLine={false} width={40} />
+    <Tooltip contentStyle={{ backgroundColor: "var(--color-chart-tooltip-bg)", border: "1px solid var(--color-chart-tooltip-border)", borderRadius: 8, color: "var(--color-chart-tooltip-fg)" }} labelStyle={{ color: "var(--color-chart-tick)" }} />
+    <Legend wrapperStyle={{ fontSize: 12 }} />
+    <Bar yAxisId="left" dataKey="revenue" name="Revenue" fill="var(--color-chart-1)" radius={[4, 4, 0, 0]} />
+    <Line yAxisId="right" type="monotone" dataKey="growth" name="Growth %" stroke="var(--color-chart-4)" strokeWidth={2} dot={{ r: 2 }} />
+  </ComposedChart>
+</ResponsiveContainer>
+```
+
+### RadarChart (multi-dimensional score, 4–8 axes)
+
+Use for capability/maturity profiles (e.g. DORA metrics, model capability, team skills). Keep axes ≤ 8:
+
+```jsx
+<ResponsiveContainer width="100%" height={260}>
+  <RadarChart data={data} outerRadius="70%">
+    <PolarGrid stroke="var(--color-chart-grid)" />
+    <PolarAngleAxis dataKey="name" tick={{ fill: "var(--color-chart-tick)", fontSize: 12 }} />
+    <PolarRadiusAxis tick={{ fill: "var(--color-chart-tick)", fontSize: 10 }} axisLine={false} />
+    <Radar name="Current" dataKey="current" stroke="var(--color-chart-1)" fill="var(--color-chart-1)" fillOpacity={0.35} />
+    <Radar name="Target" dataKey="target" stroke="var(--color-chart-2)" fill="var(--color-chart-2)" fillOpacity={0.2} />
+    <Tooltip contentStyle={{ backgroundColor: "var(--color-chart-tooltip-bg)", border: "1px solid var(--color-chart-tooltip-border)", borderRadius: 8, color: "var(--color-chart-tooltip-fg)" }} />
+    <Legend wrapperStyle={{ fontSize: 12 }} />
+  </RadarChart>
+</ResponsiveContainer>
+```
+
+### FunnelChart (conversion funnel)
+
+Use for stage-by-stage drop-off (visitors → signups → paid). Data is `[{ value, name }]`, largest stage first; color stages with `Cell`:
+
+```jsx
+<ResponsiveContainer width="100%" height={260}>
+  <FunnelChart>
+    <Tooltip contentStyle={{ backgroundColor: "var(--color-chart-tooltip-bg)", border: "1px solid var(--color-chart-tooltip-border)", borderRadius: 8, color: "var(--color-chart-tooltip-fg)" }} />
+    <Funnel dataKey="value" isAnimationActive>
+      {stages.map((s, i) => (
+        <Cell key={i} fill={`var(--color-chart-${(i % 6) + 1})`} />
+      ))}
+    </Funnel>
+    <LabelList position="right" fill="var(--color-chart-tick)" stroke="none" dataKey="name" />
+  </FunnelChart>
+</ResponsiveContainer>
+```
+
+### Treemap (hierarchical share, many categories)
+
+Use when a whole is split into many parts (cost by service, disk usage, budget allocation) — clearer than a pie chart beyond ~8 categories. Data is `[{ name, value }]` (or nested `children` for two levels). Use a custom `content` to draw labeled blocks; skip the root node (`depth === 0`) and tiny blocks:
+
+```jsx
+<ResponsiveContainer width="100%" height={260}>
+  <Treemap
+    data={data}
+    dataKey="value"
+    nameKey="name"
+    stroke="var(--color-card)"
+    padding={4}
+    content={(props) => {
+      const { x, y, width, height, name, value, index, depth } = props;
+      if (depth === 0 || width < 20 || height < 14) return null;
+      return (
+        <g>
+          <rect x={x} y={y} width={width} height={height} fill={`var(--color-chart-${(index % 6) + 1})`} rx={3} />
+          <text x={x + 6} y={y + 16} fill="#fff" fontSize={11} fontWeight={600}>{name}</text>
+          <text x={x + 6} y={y + 30} fill="rgba(255,255,255,0.8)" fontSize={10}>{value.toLocaleString()}</text>
+        </g>
+      );
+    }}
+  />
+</ResponsiveContainer>
+```
 
 ## Numbers & styling
 
