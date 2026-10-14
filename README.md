@@ -34,6 +34,7 @@ skill directory (read-only template) global runtime (user home)
 
 - On first use, the `setup` script extracts the source tarball into `~/.canvas-report` and runs `npm ci`
 - **Never pollutes the user's workspace**; installed once per machine
+- **URL as data source**: include a URL in your request (e.g. `/canvas-report https://example.com/pricing`) and the agent fetches the page and builds the report from its data — data charts are transcribed and redrawn natively, asset images are inlined, and the source is cited
 - **The final deliverable is a self-contained single-file HTML** (produced by `export`; double-click to view, shareable, no Node required):
   ```bash
   node scripts/export.mjs <report-id> [output-dir]
@@ -56,6 +57,28 @@ powershell -ExecutionPolicy Bypass -File scripts\start.ps1
 
 Then create a new jsx file under `~/.canvas-report/src/reports/` (see `src/reports/example-report.jsx` for reference)
 and open `http://localhost:5199/?report=<filename>`.
+
+## Uninstall
+
+```bash
+# Via the skills CLI
+npx skills remove iamyb/canvas-report
+
+# Or manually: delete the skill directory
+rm -rf ~/.agents/skills/canvas-report    # or wherever you cloned it
+
+# Optional: remove the global runtime (deletes all generated reports + node_modules)
+rm -rf ~/.canvas-report
+```
+
+Windows PowerShell:
+
+```powershell
+Remove-Item -Recurse -Force ~/.agents/skills/canvas-report
+Remove-Item -Recurse -Force ~/.canvas-report
+```
+
+Exported report HTML files live in your own projects (or wherever you exported them) and are not affected.
 
 ## Development
 
